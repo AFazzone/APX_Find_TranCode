@@ -1,0 +1,12 @@
+SELECT p.PortfolioCode, t.Quantity, t.TradeDate, t.SecTypeCode1, p.PortfolioStatus, s.Symbol, b.PortfolioManager, b.Custodian, b.AccountNumber
+FROM dbo.AdvPortfolioTransaction T WITH(NOLOCK)
+Inner Join dbo.AdvSecurity  s
+	ON	s.SecurityID = t.SecurityID1
+INNER JOIN RealPortfolios P
+       ON P.PortfolioBaseID = T.PortfolioID    
+Inner Join dbo.AdvPortfolioBaseExt b
+		ON p.PortfolioBaseID = b.PortfolioBaseID
+WHERE TransactionCode IN ('ac')
+And S.Symbol ='wyn'
+AND DATEDIFF(MONTH,T.TradeDate,GETDATE()) = 1 --Year is teh current year; Change to 1 for last year etc
+ORDER BY P.PortfolioCode
